@@ -2,7 +2,7 @@
   "name": "helib",
   "version": "0.0.1",
   "description": "A wrapper for HElib.",
-  "main": "index.js",
+  "main": "build/Release/node-helib.node",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/talrasha007/node-helib.git"
