@@ -20,7 +20,8 @@
         [
           "OS != 'win'", {
             "libraries": [
-              "-lntl"
+              "-lntl",
+              "-lgmp"
             ],
             "cflags_cc": [
               "-frtti",

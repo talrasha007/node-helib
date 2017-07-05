@@ -8,6 +8,8 @@ Nan::Persistent<Function> EncryptedArrayWrap::ctor;
 
 void EncryptedArrayWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("EncryptedArray").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("EncryptedArray").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());

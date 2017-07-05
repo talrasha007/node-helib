@@ -8,6 +8,8 @@ Nan::Persistent<Function> FHEPubKeyWrap::ctor;
 
 void FHEPubKeyWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("FHEPubKey").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("FHEPubKey").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());
@@ -39,6 +41,8 @@ Nan::Persistent<Function> FHESecKeyWrap::ctor;
 
 void FHESecKeyWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("FHESecKey").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("FHESecKey").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());

@@ -8,6 +8,8 @@ Nan::Persistent<Function> CtxtWrap::ctor;
 
 void CtxtWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("Ctxt").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("Ctxt").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());

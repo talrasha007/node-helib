@@ -6,6 +6,8 @@ Nan::Persistent<Function> FHEContextWrap::ctor;
 
 void FHEContextWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("FHEContext").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("FHEContext").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());
