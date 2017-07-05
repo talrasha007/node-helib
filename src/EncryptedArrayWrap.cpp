@@ -33,6 +33,8 @@ Nan::Persistent<Function> PlaintextArrayWrap::ctor;
 
 void PlaintextArrayWrap::setup(v8::Handle<v8::Object> exports) {
     Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
+    tpl->SetClassName(Nan::New("PlaintextArray").ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     exports->Set(Nan::New("PlaintextArray").ToLocalChecked(), tpl->GetFunction());
     ctor.Reset(tpl->GetFunction());
