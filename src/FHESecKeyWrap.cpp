@@ -16,8 +16,8 @@ void FHEPubKeyWrap::setup(v8::Handle<v8::Object> exports) {
 }
 
 NAN_METHOD(FHEPubKeyWrap::New) {
-    FHESecKeyWrap *kw = Nan::ObjectWrap::Unwrap<FHESecKeyWrap>(info[0]->ToObject());
-    FHEContextWrap *cw = Nan::ObjectWrap::Unwrap<FHEContextWrap>(info[0]->ToObject());
+    FHEContextWrap *cw = !info[0]->BooleanValue() ? nullptr : Nan::ObjectWrap::Unwrap<FHEContextWrap>(info[0]->ToObject());
+    FHESecKeyWrap *kw = !info[1]->BooleanValue() ? nullptr : Nan::ObjectWrap::Unwrap<FHESecKeyWrap>(info[1]->ToObject());
 
     FHEPubKeyWrap* paw = kw ?
         new FHEPubKeyWrap(kw->key) :
