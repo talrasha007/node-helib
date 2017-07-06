@@ -6,8 +6,8 @@ using namespace v8;
 
 const char * const FHEPubKeyWrap::CLASS_NAME = "FHEPubKey";
 
-void FHEPubKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
-
+void FHEPubKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
+    Serializable::setupMember<FHEPubKeyWrap>(tpl);
 }
 
 NAN_METHOD(FHEPubKeyWrap::ctor) {
@@ -32,10 +32,21 @@ FHEPubKeyWrap::FHEPubKeyWrap(const FHEPubKey& pubKey)
     
 }
 
+void FHEPubKeyWrap::read(std::istream& is) {
+    is >> key;
+}
+
+
+void FHEPubKeyWrap::write(std::ostream& os) {
+    os << key;
+}
+
 const char * const FHESecKeyWrap::CLASS_NAME = "FHESecKey";
 
-void FHESecKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
+void FHESecKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
+    Serializable::setupMember<FHESecKeyWrap>(tpl);
 
+    Nan::SetPrototypeMethod(tpl, "genSecKey", wrapFunction<&FHESecKeyWrap::genSecKey>);
 }
 
 NAN_METHOD(FHESecKeyWrap::ctor) {
@@ -49,4 +60,20 @@ NAN_METHOD(FHESecKeyWrap::ctor) {
 FHESecKeyWrap::FHESecKeyWrap(const FHEcontext& context)
 : key(context) {
 
+}
+
+NAN_METHOD(FHESecKeyWrap::genSecKey) {
+    long w = info[0]->Int32Value();
+    key.GenSecKey(w);
+    addSome1DMatrices(key);
+
+    info.GetReturnValue().Set(info.This());
+}
+
+void FHESecKeyWrap::read(std::istream& is) {
+    is >> key;
+}
+
+void FHESecKeyWrap::write(std::ostream& os) {
+    os << key;
 }

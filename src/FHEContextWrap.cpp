@@ -4,7 +4,7 @@ using namespace v8;
 
 const char * const FHEContextWrap::CLASS_NAME = "FHEContext";
 
-void FHEContextWrap::setupMember(v8::Handle<v8::FunctionTemplate>& tpl) {
+void FHEContextWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
     Serializable::setupMember<FHEContextWrap>(tpl);
 }
 

@@ -9,7 +9,7 @@ class FHEContextWrap : public nnu::ClassWrap<FHEContextWrap>, public Serializabl
 public:
     static const char * const CLASS_NAME;
 
-    void static setupMember(v8::Handle<v8::FunctionTemplate>& tpl);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> &tpl);
     static NAN_METHOD(ctor);
 
 public:
