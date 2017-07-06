@@ -19,6 +19,6 @@
   "homepage": "https://github.com/talrasha007/node-helib#readme",
   "dependencies": {
     "nan": "^2.6.2",
-    "nnu": "^0.1.3"
+    "nnu": "0.1.5"
   }
 }

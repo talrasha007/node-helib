@@ -15,7 +15,8 @@
         "src/CtxtWrap.cpp",
         "src/EncryptedArrayWrap.cpp",
         "src/FHEContextWrap.cpp",
-        "src/FHESecKeyWrap.cpp"
+        "src/FHESecKeyWrap.cpp",
+        "src/Serializable.cpp"
       ],
       "conditions": [
         [

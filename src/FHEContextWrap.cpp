@@ -4,8 +4,8 @@ using namespace v8;
 
 const char * const FHEContextWrap::CLASS_NAME = "FHEContext";
 
-void FHEContextWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
-
+void FHEContextWrap::setupMember(v8::Handle<v8::FunctionTemplate>& tpl) {
+    Serializable::setupMember<FHEContextWrap>(tpl);
 }
 
 NAN_METHOD(FHEContextWrap::ctor) {
@@ -34,4 +34,13 @@ NAN_METHOD(FHEContextWrap::ctor) {
 FHEContextWrap::FHEContextWrap(unsigned long m, unsigned long p, unsigned long r, const vector<long>& gens, const vector<long>& ords)
 : context(m, p, r, gens, ords) {
 
+}
+
+void FHEContextWrap::read(std::istream& is) {
+    is >> context;
+}
+
+
+void FHEContextWrap::write(std::ostream& os) {
+    os << context;
 }
