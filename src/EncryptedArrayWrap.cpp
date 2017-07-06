@@ -1,13 +1,18 @@
 #include "FHEContextWrap.h"
 
+#include "CtxtWrap.h"
+#include "FHESecKeyWrap.h"
+
 #include "EncryptedArrayWrap.h"
 
 using namespace v8;
 
 const char * const EncryptedArrayWrap::CLASS_NAME = "EncryptedArray";
 
-void EncryptedArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
-
+void EncryptedArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
+    Nan::SetPrototypeMethod(tpl, "getSize", wrapFunction<&EncryptedArrayWrap::size>);
+    Nan::SetPrototypeMethod(tpl, "encrypt", wrapFunction<&EncryptedArrayWrap::encrypt>);
+    Nan::SetPrototypeMethod(tpl, "decrypt", wrapFunction<&EncryptedArrayWrap::decrypt>);
 }
 
 NAN_METHOD(EncryptedArrayWrap::ctor) {
@@ -24,10 +29,36 @@ EncryptedArrayWrap::EncryptedArrayWrap(const FHEcontext& context)
 
 }
 
+NAN_METHOD(EncryptedArrayWrap::size) {
+    info.GetReturnValue().Set(Nan::New(static_cast<int>(ea.size())));
+}
+
+NAN_METHOD(EncryptedArrayWrap::encrypt) {
+    CtxtWrap *ctxt = Nan::ObjectWrap::Unwrap<CtxtWrap>(info[0]->ToObject());
+    FHEPubKeyWrap *pubkey = Nan::ObjectWrap::Unwrap<FHEPubKeyWrap>(info[1]->ToObject());
+    PlaintextArrayWrap *pa = Nan::ObjectWrap::Unwrap<PlaintextArrayWrap>(info[2]->ToObject());
+
+    ea.encrypt(ctxt->ctxt, pubkey->key, pa->pa);
+
+    info.GetReturnValue().Set(info.This());
+}
+
+NAN_METHOD(EncryptedArrayWrap::decrypt) {
+    CtxtWrap *ctxt = Nan::ObjectWrap::Unwrap<CtxtWrap>(info[0]->ToObject());
+    FHESecKeyWrap *key = Nan::ObjectWrap::Unwrap<FHESecKeyWrap>(info[1]->ToObject());
+    PlaintextArrayWrap *pa = Nan::ObjectWrap::Unwrap<PlaintextArrayWrap>(info[2]->ToObject());
+
+    ea.decrypt(ctxt->ctxt, key->key, pa->pa);
+
+    info.GetReturnValue().Set(info.This());
+}
+
 const char * const PlaintextArrayWrap::CLASS_NAME = "PlaintextArray";
 
-void PlaintextArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
+void PlaintextArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
+    Serializable::setupMember<PlaintextArrayWrap>(tpl);
 
+    Nan::SetPrototypeMethod(tpl, "random", wrapFunction<&PlaintextArrayWrap::random>);
 }
 
 NAN_METHOD(PlaintextArrayWrap::ctor) {
@@ -40,6 +71,19 @@ NAN_METHOD(PlaintextArrayWrap::ctor) {
 }
 
 PlaintextArrayWrap::PlaintextArrayWrap(const EncryptedArray& ea)
-: pa(ea) {
+: pa(ea), _ea(ea) {
 
+}
+
+NAN_METHOD(PlaintextArrayWrap::random) {
+    ::random(_ea, pa);
+    info.GetReturnValue().Set(info.This());
+}
+
+void PlaintextArrayWrap::read(std::istream& is) {
+    // is >> pa;
+}
+
+void PlaintextArrayWrap::write(std::ostream& os) {
+    os << pa;
 }

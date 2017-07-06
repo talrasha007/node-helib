@@ -33,7 +33,7 @@ NAN_METHOD(FHEContextWrap::ctor) {
 
 FHEContextWrap::FHEContextWrap(unsigned long m, unsigned long p, unsigned long r, const vector<long>& gens, const vector<long>& ords)
 : context(m, p, r, gens, ords) {
-
+    buildModChain(context, 5, 2);
 }
 
 void FHEContextWrap::read(std::istream& is) {
