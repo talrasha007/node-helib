@@ -1,14 +1,14 @@
 #pragma once
 
-#include <nan.h>
+#include <nnu.h>
 #include <EncryptedArray.h>
 
-class EncryptedArrayWrap : public Nan::ObjectWrap {
+class EncryptedArrayWrap : public nnu::ClassWrap<EncryptedArrayWrap> {
 public:
-    static Nan::Persistent<v8::Function> ctor;
+    static const char * const CLASS_NAME;
 
-    void static setup(v8::Handle<v8::Object> exports);
-    static NAN_METHOD(New);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> tpl);
+    static NAN_METHOD(ctor);
 
 public:
     EncryptedArrayWrap(const FHEcontext& context);
@@ -17,12 +17,12 @@ public:
     EncryptedArray ea;
 };
 
-class PlaintextArrayWrap : public Nan::ObjectWrap {
+class PlaintextArrayWrap : public nnu::ClassWrap<PlaintextArrayWrap> {
 public:
-    static Nan::Persistent<v8::Function> ctor;
+    static const char * const CLASS_NAME;
 
-    void static setup(v8::Handle<v8::Object> exports);
-    static NAN_METHOD(New);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> tpl);
+    static NAN_METHOD(ctor);
 
 public:
     PlaintextArrayWrap(const EncryptedArray& ea);

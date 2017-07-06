@@ -1,14 +1,14 @@
 #pragma once
 
-#include <nan.h>
+#include <nnu.h>
 #include <FHEContext.h>
 
-class FHEContextWrap : public Nan::ObjectWrap {
+class FHEContextWrap : public nnu::ClassWrap<FHEContextWrap> {
 public:
-    static Nan::Persistent<v8::Function> ctor;
+    static const char * const CLASS_NAME;
 
-    void static setup(v8::Handle<v8::Object> exports);
-    static NAN_METHOD(New);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> tpl);
+    static NAN_METHOD(ctor);
 
 public:
     FHEContextWrap(

@@ -4,18 +4,13 @@
 
 using namespace v8;
 
-Nan::Persistent<Function> EncryptedArrayWrap::ctor;
+const char * const EncryptedArrayWrap::CLASS_NAME = "EncryptedArray";
 
-void EncryptedArrayWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("EncryptedArray").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void EncryptedArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("EncryptedArray").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(EncryptedArrayWrap::New) {
+NAN_METHOD(EncryptedArrayWrap::ctor) {
     FHEContextWrap *cw = Nan::ObjectWrap::Unwrap<FHEContextWrap>(info[0]->ToObject());
 
     EncryptedArrayWrap* eaw = new EncryptedArrayWrap(cw->context);
@@ -29,18 +24,13 @@ EncryptedArrayWrap::EncryptedArrayWrap(const FHEcontext& context)
 
 }
 
-Nan::Persistent<Function> PlaintextArrayWrap::ctor;
+const char * const PlaintextArrayWrap::CLASS_NAME = "PlaintextArray";
 
-void PlaintextArrayWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("PlaintextArray").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void PlaintextArrayWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("PlaintextArray").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(PlaintextArrayWrap::New) {
+NAN_METHOD(PlaintextArrayWrap::ctor) {
     EncryptedArrayWrap *eaw = Nan::ObjectWrap::Unwrap<EncryptedArrayWrap>(info[0]->ToObject());
 
     PlaintextArrayWrap* paw = new PlaintextArrayWrap(eaw->ea);

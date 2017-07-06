@@ -4,18 +4,13 @@
 
 using namespace v8;
 
-Nan::Persistent<Function> CtxtWrap::ctor;
+const char * const CtxtWrap::CLASS_NAME = "Ctxt";
 
-void CtxtWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("Ctxt").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void CtxtWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("Ctxt").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(CtxtWrap::New) {
+NAN_METHOD(CtxtWrap::ctor) {
     FHEPubKeyWrap *pw = Nan::ObjectWrap::Unwrap<FHEPubKeyWrap>(info[0]->ToObject());
 
     CtxtWrap* paw = new CtxtWrap(pw->key);

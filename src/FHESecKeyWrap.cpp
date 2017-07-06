@@ -4,18 +4,13 @@
 
 using namespace v8;
 
-Nan::Persistent<Function> FHEPubKeyWrap::ctor;
+const char * const FHEPubKeyWrap::CLASS_NAME = "FHEPubKey";
 
-void FHEPubKeyWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("FHEPubKey").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void FHEPubKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("FHEPubKey").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(FHEPubKeyWrap::New) {
+NAN_METHOD(FHEPubKeyWrap::ctor) {
     FHEContextWrap *cw = !info[0]->BooleanValue() ? nullptr : Nan::ObjectWrap::Unwrap<FHEContextWrap>(info[0]->ToObject());
     FHESecKeyWrap *kw = !info[1]->BooleanValue() ? nullptr : Nan::ObjectWrap::Unwrap<FHESecKeyWrap>(info[1]->ToObject());
 
@@ -37,18 +32,13 @@ FHEPubKeyWrap::FHEPubKeyWrap(const FHEPubKey& pubKey)
     
 }
 
-Nan::Persistent<Function> FHESecKeyWrap::ctor;
+const char * const FHESecKeyWrap::CLASS_NAME = "FHESecKey";
 
-void FHESecKeyWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("FHESecKey").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void FHESecKeyWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("FHESecKey").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(FHESecKeyWrap::New) {
+NAN_METHOD(FHESecKeyWrap::ctor) {
     FHEContextWrap *cw = Nan::ObjectWrap::Unwrap<FHEContextWrap>(info[0]->ToObject());
 
     FHESecKeyWrap* paw = new FHESecKeyWrap(cw->context);

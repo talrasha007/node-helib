@@ -1,14 +1,14 @@
 #pragma once
 
-#include <nan.h>
+#include <nnu.h>
 #include <FHE.h>
 
-class FHEPubKeyWrap : public Nan::ObjectWrap {
+class FHEPubKeyWrap : public nnu::ClassWrap<FHEPubKeyWrap> {
 public:
-    static Nan::Persistent<v8::Function> ctor;
+    static const char * const CLASS_NAME;
 
-    void static setup(v8::Handle<v8::Object> exports);
-    static NAN_METHOD(New);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> tpl);
+    static NAN_METHOD(ctor);
 
 public:
     FHEPubKeyWrap(const FHEcontext& context);
@@ -18,12 +18,12 @@ public:
     FHEPubKey key;
 };
 
-class FHESecKeyWrap : public Nan::ObjectWrap {
+class FHESecKeyWrap : public nnu::ClassWrap<FHESecKeyWrap> {
 public:
-    static Nan::Persistent<v8::Function> ctor;
+    static const char * const CLASS_NAME;
 
-    void static setup(v8::Handle<v8::Object> exports);
-    static NAN_METHOD(New);
+    void static setupMember(v8::Handle<v8::FunctionTemplate> tpl);
+    static NAN_METHOD(ctor);
 
 public:
     FHESecKeyWrap(const FHEcontext& context);

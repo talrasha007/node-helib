@@ -4,6 +4,7 @@
       "target_name": "node-helib",
 	  "include_dirs" : [
         "<!(node -e \"require('nan')\")",
+        "<!(node -e \"require('nnu')\")",
         "dep/HElib/src"
       ],
       "dependencies": [

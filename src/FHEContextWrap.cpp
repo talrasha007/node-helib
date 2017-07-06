@@ -2,18 +2,13 @@
 
 using namespace v8;
 
-Nan::Persistent<Function> FHEContextWrap::ctor;
+const char * const FHEContextWrap::CLASS_NAME = "FHEContext";
 
-void FHEContextWrap::setup(v8::Handle<v8::Object> exports) {
-    Local<FunctionTemplate> tpl = Nan::New<FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("FHEContext").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+void FHEContextWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
 
-    exports->Set(Nan::New("FHEContext").ToLocalChecked(), tpl->GetFunction());
-    ctor.Reset(tpl->GetFunction());
 }
 
-NAN_METHOD(FHEContextWrap::New) {
+NAN_METHOD(FHEContextWrap::ctor) {
     unsigned long m = info[0]->Uint32Value();
     unsigned long p = info[1]->Uint32Value();
     unsigned long r = info[2]->Uint32Value();
