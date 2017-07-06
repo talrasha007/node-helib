@@ -36,9 +36,15 @@ NAN_METHOD(EncryptedArrayWrap::size) {
 NAN_METHOD(EncryptedArrayWrap::encrypt) {
     CtxtWrap *ctxt = Nan::ObjectWrap::Unwrap<CtxtWrap>(info[0]->ToObject());
     FHEPubKeyWrap *pubkey = Nan::ObjectWrap::Unwrap<FHEPubKeyWrap>(info[1]->ToObject());
-    PlaintextArrayWrap *pa = Nan::ObjectWrap::Unwrap<PlaintextArrayWrap>(info[2]->ToObject());
 
-    ea.encrypt(ctxt->ctxt, pubkey->key, pa->pa);
+    Local<Array> arr = Local<Array>::Cast(info[2]->ToObject());
+    vector<long> vec;
+    vec.reserve(arr->Length());
+    for (int i = 0; i < arr->Length(); i++) {
+        vec.push_back(arr->Get(i)->Int32Value());
+    }
+
+    ea.encrypt(ctxt->ctxt, pubkey->key, vec);
 
     info.GetReturnValue().Set(info.This());
 }
@@ -46,11 +52,17 @@ NAN_METHOD(EncryptedArrayWrap::encrypt) {
 NAN_METHOD(EncryptedArrayWrap::decrypt) {
     CtxtWrap *ctxt = Nan::ObjectWrap::Unwrap<CtxtWrap>(info[0]->ToObject());
     FHESecKeyWrap *key = Nan::ObjectWrap::Unwrap<FHESecKeyWrap>(info[1]->ToObject());
-    PlaintextArrayWrap *pa = Nan::ObjectWrap::Unwrap<PlaintextArrayWrap>(info[2]->ToObject());
 
-    ea.decrypt(ctxt->ctxt, key->key, pa->pa);
+    vector<long> vec;
+    vec.reserve(ea.size());
+    ea.decrypt(ctxt->ctxt, key->key, vec);
 
-    info.GetReturnValue().Set(info.This());
+    Local<Array> arr = Nan::New<Array>(ea.size());
+    for (int i = 0; i < vec.size(); i++) {
+        arr->Set(i, Nan::New(static_cast<int>(vec[i])));
+    }
+
+    info.GetReturnValue().Set(arr);
 }
 
 const char * const PlaintextArrayWrap::CLASS_NAME = "PlaintextArray";
