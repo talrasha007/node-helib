@@ -6,8 +6,9 @@ using namespace v8;
 
 const char * const CtxtWrap::CLASS_NAME = "Ctxt";
 
-void CtxtWrap::setupMember(v8::Handle<v8::FunctionTemplate> tpl) {
-
+void CtxtWrap::setupMember(v8::Handle<v8::FunctionTemplate> &tpl) {
+    Serializable::setupMember<CtxtWrap>(tpl);
+    Nan::SetPrototypeMethod(tpl, "add", wrapFunction<&CtxtWrap::add>);
 }
 
 NAN_METHOD(CtxtWrap::ctor) {
@@ -21,4 +22,19 @@ NAN_METHOD(CtxtWrap::ctor) {
 CtxtWrap::CtxtWrap(const FHEPubKey& pubKey)
 : ctxt(pubKey) {
 
+}
+
+NAN_METHOD(CtxtWrap::add) {
+    CtxtWrap *o = Nan::ObjectWrap::Unwrap<CtxtWrap>(info[0]->ToObject());
+    ctxt += o->ctxt;
+
+    info.GetReturnValue().Set(info.This());
+}
+
+void CtxtWrap::read(std::istream& is) {
+    is >> ctxt;
+}
+
+void CtxtWrap::write(std::ostream& os) {
+    os << ctxt;
 }
