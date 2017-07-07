@@ -16,8 +16,9 @@ public:
     CtxtWrap(const FHEPubKey& pubKey);
 
     NAN_METHOD(add);
-    // NAN_METHOD(sub);
-    // NAN_METHOD(mul);
+    NAN_METHOD(sub);
+    NAN_METHOD(mul);
+    NAN_METHOD(rotate);
 
 private:
     virtual void read(std::istream& is);
